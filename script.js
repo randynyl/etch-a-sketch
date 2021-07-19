@@ -18,7 +18,7 @@ function giveCellsHoverListener() {
 }
 
 function increaseColourAlpha(currentColour) {
-    if (currentColour == '') {
+    if (currentColour == '' || currentColour == 'rgb(255, 255, 255)') {
         return 'rgba(0, 0, 0, 0.2)';
     } else {
         const parts = currentColour.match(/[\d.]+/g);
