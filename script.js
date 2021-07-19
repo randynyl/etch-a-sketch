@@ -11,9 +11,24 @@ function giveCellsHoverListener() {
     var cells = document.querySelectorAll('.cell');
     cells.forEach((cell) => {
         cell.addEventListener('mouseover', () => {
-            cell.classList.add('hovered')
+            console.log(cell.style.backgroundColor);
+            cell.style.backgroundColor = increaseColourAlpha(cell.style.backgroundColor);
         })
     })
+}
+
+function increaseColourAlpha(currentColour) {
+    if (currentColour == '') {
+        return 'rgba(0, 0, 0, 0.2)';
+    } else {
+        const parts = currentColour.match(/[\d.]+/g);
+        if (parts.length === 3) {
+            return currentColour;
+        } else {
+            parts[3] = parseFloat(parts[3]) + 0.2;
+            return `rgba(${parts.join(',')})`;
+        }
+    }
 }
 
 
@@ -22,7 +37,7 @@ clearBtn.addEventListener('click', () => {
     var cells = document.querySelectorAll('.cell');
     console.log('clear button clicked');
     cells.forEach((cell) => {
-        cell.classList.remove('hovered');
+        cell.style.backgroundColor = "#fff";
     })
 })
 
