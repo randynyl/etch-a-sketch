@@ -5,15 +5,21 @@ for (let i = 0; i < 16*16; i++) {
     container.appendChild(cell.cloneNode(true));
 }
 
-var cells = document.querySelectorAll('.cell')
-cells.forEach((cell) => {
-    cell.addEventListener('mouseover', () => {
-        cell.classList.add('hovered')
+giveCellsHoverListener();
+
+function giveCellsHoverListener() {
+    var cells = document.querySelectorAll('.cell');
+    cells.forEach((cell) => {
+        cell.addEventListener('mouseover', () => {
+            cell.classList.add('hovered')
+        })
     })
-})
+}
+
 
 const clearBtn = document.getElementById('clear-button');
 clearBtn.addEventListener('click', () => {
+    var cells = document.querySelectorAll('.cell');
     console.log('clear button clicked');
     cells.forEach((cell) => {
         cell.classList.remove('hovered');
@@ -25,10 +31,11 @@ gridSizeBtn.addEventListener('click', () => {
     console.log('size button clicked');
     rowSize = promptRowSize();
     console.log(rowSize);
-
+    changeGrid(rowSize);
 })
 
-function promptRowSize() {    
+function promptRowSize() {  
+    let rowSize = 0;  
     do {
         let rowSizeInput = prompt('How many squares per side in the grid? (1-100)');
         if (rowSizeInput == null || rowSizeInput == '') {
@@ -36,8 +43,26 @@ function promptRowSize() {
         }
         else {
             console.log(rowSizeInput);
-            let rowSize =  parseInt(rowSizeInput);
+            rowSize = parseInt(rowSizeInput);
         }
     } while (rowSize < 1 || rowSize > 100 || isNaN(rowSize))
     return rowSize;
+}
+
+function changeGrid(rowSize) {
+    if (rowSize == -1) {
+        return;
+    }
+    else {
+        var cells = document.querySelectorAll('.cell');
+        cells.forEach((cell) => {
+            cell.parentNode.removeChild(cell);
+        })
+        container.style.gridTemplateColumns = `repeat(${rowSize}, auto)`;
+        container.style.gridTemplateRows = `repeat(${rowSize}, auto)`;
+        for (let i = 0; i < rowSize*rowSize; i++) {
+            container.appendChild(cell.cloneNode(true));
+        }
+        giveCellsHoverListener();
+    }
 }
